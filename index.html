@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FiveM Server</title>
+<title>Cronixo Server</title>
 
 <style>
 * {
@@ -12,7 +12,7 @@
     box-sizing: border-box;
 }
 
-/* === START I DARK MODE === */
+/* === DARK MODE === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1a1a1a;
@@ -26,11 +26,13 @@ body.light-mode {
     color: #1a1a1a;
 }
 
+/* HEADER */
 header {
     background-color: #dc2626;
     padding: 20px;
     text-align: center;
     color: white;
+    grid-column: 1 / -1;
 }
 
 /* TOGGLE KNAP */
@@ -46,52 +48,60 @@ header {
     cursor: pointer;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 20px;
-}
-
-.buttons-grid {
+/* SIDEBAR LAYOUT */
+body {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
 }
 
-/* KNAPPER – DARK MODE */
-.btn {
+.sidebar {
+    background-color: #2a2a2a;
     padding: 20px;
+}
+
+body.light-mode .sidebar {
+    background-color: #f2f2f2;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 15px;
     background-color: #991b1b;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1.1em;
+    font-size: 1em;
     cursor: pointer;
+    text-align: left;
     transition: background-color 0.3s, transform 0.2s;
 }
 
-.btn:hover {
-    transform: scale(1.05);
-}
-
-/* KNAPPER – LIGHT MODE */
-body.light-mode .btn {
+body.light-mode .sidebar button {
     background-color: #dc2626;
     color: white;
 }
 
-/* INFO SECTIONS – DARK MODE */
-.info-section {
-    display: none;
-    background-color: #2a2a2a;
-    color: #ebebeb;
-    padding: 30px;
-    border-radius: 8px;
-    margin-top: 40px;
-    border-left: 5px solid #dc2626;
+.sidebar button:hover {
+    transform: scale(1.03);
 }
 
-/* INFO SECTIONS – LIGHT MODE */
+/* MAIN CONTENT */
+.main {
+    padding: 40px 30px;
+}
+
+.info-section {
+    display: none;
+    padding: 20px;
+    border-left: 5px solid #dc2626;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    margin-bottom: 20px;
+}
+
 body.light-mode .info-section {
     background-color: #ffffff;
     color: #1a1a1a;
@@ -110,7 +120,6 @@ body.light-mode .info-section {
 .price-list li {
     padding: 10px 0;
     border-bottom: 1px solid #777;
-    font-size: 1.1em;
 }
 
 body.light-mode .price-list li {
@@ -120,31 +129,29 @@ body.light-mode .price-list li {
 footer {
     text-align: center;
     padding: 20px;
-    margin-top: 40px;
     opacity: 0.7;
+    grid-column: 1 / -1;
 }
 </style>
 </head>
 
 <body>
-<button class="toggle-btn" id="modeBtn" onclick="toggleMode()">☀️ Light Mode</button>
-
 <header>
     <h1>Cronixo Server</h1>
     <p>Danmarks fedeste roleplay oplevelse</p>
+    <button class="toggle-btn" id="modeBtn" onclick="toggleMode()">☀️ Light Mode</button>
 </header>
 
-<div class="container">
+<div class="sidebar">
+    <button onclick="showSection('home')">Om Serveren</button>
+    <button onclick="showSection('join')">Tilslut Server</button>
+    <button onclick="showSection('discord')">Discord</button>
+    <button onclick="showSection('rules')">Server Regler</button>
+    <button onclick="showSection('store')">Butik</button>
+</div>
 
-    <div class="buttons-grid">
-        <button class="btn" onclick="showSection('join')">Tilslut Server</button>
-        <button class="btn" onclick="showSection('discord')">Discord</button>
-        <button class="btn" onclick="showSection('rules')">Server Regler</button>
-        <button class="btn" onclick="showSection('store')">Butik</button>
-        <button class="btn" onclick="showSection('prices')">Om Os</button>
-    </div>
-
-    <div id="prices" class="info-section">
+<div class="main">
+    <div id="home" class="info-section" style="display: block;">
         <h2>Om Cronixo Server</h2>
         <p>Cronixo Server er Danmarks fedeste roleplay server med fokus på kvalitet, fællesskab og seriøs RP.</p>
         <p>Vores staff er aktiv og hjælper altid spillerne.</p>
@@ -183,7 +190,6 @@ footer {
             <li>Senior Ledelse – <strong>149 kr.</strong></li>
         </ul>
     </div>
-
 </div>
 
 <footer>
@@ -208,6 +214,5 @@ function showSection(id) {
     document.getElementById(id).style.display = 'block';
 }
 </script>
-
 </body>
 </html>
