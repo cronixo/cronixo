@@ -6,129 +6,157 @@
 <title>Cronixo Server</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    background:#1a1a1a;
+    color:#ebebeb;
+    transition:.3s;
+    overflow-x:hidden
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a1a;
-    color: #ebebeb;
-    transition: background-color 0.3s, color 0.3s;
+body.light-mode{
+    background:#eee;
+    color:#1a1a1a
 }
 
-body.light-mode {
-    background-color: #eeeeee;
-    color: #1a1a1a;
+header{
+    background:#dc2626;
+    padding:20px;
+    text-align:center;
+    color:#fff;
+    position:relative
 }
 
-header {
-    background-color: #dc2626;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    position: relative;
+/* 🔔 NOTIFICATION */
+.notification-wrapper{
+    position:fixed;
+    top:90px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:999;
+    pointer-events:none
 }
 
-/* 🔔 SINGLE NOTIFICATION */
-.notification-wrapper {
-    position: fixed;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999;
-    pointer-events: none;
+.notice{
+    min-width:320px;
+    max-width:90vw;
+    padding:15px 18px;
+    border-radius:12px;
+    opacity:0;
+    transform:translateY(-15px);
+    transition:.5s ease;
+    font-size:.95rem
 }
 
-.notice {
-    min-width: 320px;
-    max-width: 90vw;
-    padding: 15px 18px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    opacity: 0;
-    transform: translateY(-15px);
-    transition: all 0.5s ease;
+.notice.show{
+    opacity:1;
+    transform:translateY(0)
 }
 
-/* Visible */
-.notice.show {
-    opacity: 1;
-    transform: translateY(0);
+.notice.info{background:#1f2933;border-left:5px solid #38bdf8}
+.notice.warning{background:#2a1f1f;border-left:5px solid #facc15}
+.notice.success{background:#1f2a22;border-left:5px solid #22c55e}
+.notice.error{background:#2a1f1f;border-left:5px solid #ef4444}
+
+body.light-mode .notice{
+    background:#fff;
+    color:#1a1a1a
 }
 
-/* Types */
-.notice.info {
-    background: #1f2933;
-    border-left: 5px solid #38bdf8;
+.toggle-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:10px 15px;
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer
 }
 
-.notice.warning {
-    background: #2a1f1f;
-    border-left: 5px solid #facc15;
+.menu-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    width:30px;
+    height:25px;
+    cursor:pointer;
+    z-index:1001
 }
 
-.notice.success {
-    background: #1f2a22;
-    border-left: 5px solid #22c55e;
+.menu-btn span{
+    display:block;
+    height:3px;
+    background:#fff;
+    margin:5px 0;
+    transition:.4s
 }
 
-.notice.error {
-    background: #2a1f1f;
-    border-left: 5px solid #ef4444;
+.menu-btn.open span:nth-child(1){
+    transform:rotate(45deg) translate(5px,5px)
+}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){
+    transform:rotate(-45deg) translate(5px,-5px)
 }
 
-/* Light mode */
-body.light-mode .notice {
-    background: #ffffff;
-    color: #1a1a1a;
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:-250px;
+    top:0;
+    width:250px;
+    height:100%;
+    background:#2a2a2a;
+    padding:60px 20px 20px;
+    transition:.4s;
+    z-index:1000
 }
 
-/* Existing buttons */
-.toggle-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 15px;
-    background-color: #dc2626;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+body.light-mode .sidebar{background:#f2f2f2}
+
+.sidebar button{
+    width:100%;
+    margin-bottom:15px;
+    padding:15px;
+    background:#991b1b;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    text-align:left
 }
 
-.menu-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 30px;
-    height: 25px;
-    cursor: pointer;
-    z-index: 1001;
+.sidebar button:hover{transform:scale(1.03)}
+
+/* MAIN */
+.main{
+    padding:100px 30px 30px
 }
 
-.menu-btn span {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background: white;
-    margin: 5px 0;
-    transition: 0.4s;
+.info-section{
+    display:none;
+    padding:20px;
+    background:#2a2a2a;
+    border-left:5px solid #dc2626;
+    border-radius:8px;
+    margin-bottom:20px
 }
 
-.menu-btn.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+body.light-mode .info-section{
+    background:#fff;
+    color:#1a1a1a
 }
 
-.menu-btn.open span:nth-child(2) {
-    opacity: 0;
+.info-section h2{
+    margin-bottom:15px;
+    color:#dc2626
 }
 
-.menu-btn.open span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
+footer{text-align:center;padding:20px;opacity:.7}
 </style>
 </head>
 <body>
@@ -142,54 +170,85 @@ body.light-mode .notice {
     <p>Danmarks fedeste roleplay oplevelse</p>
 </header>
 
-<!-- 🔔 Notification container -->
+<!-- 🔔 SINGLE NOTIFICATION -->
 <div class="notification-wrapper">
     <div id="notification" class="notice"></div>
 </div>
 
+<div class="sidebar" id="sidebar">
+    <button onclick="showSection('home');toggleMenu()">Om Serveren</button>
+    <button onclick="showSection('join');toggleMenu()">Tilslut</button>
+    <button onclick="showSection('discord');toggleMenu()">Discord</button>
+    <button onclick="showSection('rules');toggleMenu()">Regler</button>
+    <button onclick="showSection('store');toggleMenu()">Butik</button>
+    <button onclick="showSection('jobs');toggleMenu()">Jobs</button>
+    <button onclick="showSection('faq');toggleMenu()">FAQ</button>
+</div>
+
+<div class="main">
+    <div id="home" class="info-section" style="display:block">
+        <h2>Om Cronixo</h2><p>Velkommen til Cronixo Server.</p>
+    </div>
+    <div id="join" class="info-section"><h2>Tilslut</h2></div>
+    <div id="discord" class="info-section"><h2>Discord</h2></div>
+    <div id="rules" class="info-section"><h2>Regler</h2></div>
+    <div id="store" class="info-section"><h2>Butik</h2></div>
+    <div id="jobs" class="info-section"><h2>Jobs</h2></div>
+    <div id="faq" class="info-section"><h2>FAQ</h2></div>
+</div>
+
+<footer>&copy; 2026 Cronixo Server</footer>
+
 <script>
-/* ✏️ CUSTOMIZE NOTIFICATIONS HERE */
-const notifications = [
-    { type: "info", text: "ℹ️ Serveren åbner kl. 18:00 i dag!" },
-    { type: "warning", text: "⚠️ Nye regler er blevet opdateret." },
-    { type: "success", text: "✅ Jobs er nu tilgængelige på serveren." },
-    { type: "error", text: "❌ Midlertidig genstart kl. 22:00." }
+/* 🔔 NOTIFICATIONS */
+const notifications=[
+    {type:"info",text:"ℹ️ Serveren åbner kl. 18:00 i dag!"},
+    {type:"warning",text:"⚠️ Nye regler er blevet opdateret."},
+    {type:"success",text:"✅ Jobs er nu tilgængelige."},
+    {type:"error",text:"❌ Midlertidig genstart kl. 22:00."}
 ];
 
-/* ⏱ Timing (milliseconds) */
-const minDelay = 20000; // 20 seconds
-const maxDelay = 60000; // 60 seconds
-const displayTime = 6000; // visible for 6 seconds
+const minDelay=25000;
+const maxDelay=70000;
+const displayTime=6000;
 
-const noticeEl = document.getElementById("notification");
+const notice=document.getElementById("notification");
 
-function showRandomNotification() {
-    const n = notifications[Math.floor(Math.random() * notifications.length)];
+function showNotification(){
+    const n=notifications[Math.floor(Math.random()*notifications.length)];
+    notice.className=`notice ${n.type}`;
+    notice.textContent=n.text;
 
-    noticeEl.className = `notice ${n.type}`;
-    noticeEl.textContent = n.text;
+    setTimeout(()=>notice.classList.add("show"),50);
+    setTimeout(()=>notice.classList.remove("show"),displayTime);
 
-    // Show
-    setTimeout(() => noticeEl.classList.add("show"), 50);
-
-    // Hide
-    setTimeout(() => noticeEl.classList.remove("show"), displayTime);
-
-    // Schedule next
-    const nextDelay = Math.random() * (maxDelay - minDelay) + minDelay;
-    setTimeout(showRandomNotification, nextDelay);
+    setTimeout(showNotification,
+        Math.random()*(maxDelay-minDelay)+minDelay
+    );
 }
 
-// Start system
-setTimeout(showRandomNotification, 10000);
+setTimeout(showNotification,10000);
 
-/* Theme toggle */
-function toggleMode() {
-    document.body.classList.toggle('light-mode');
-    document.getElementById('modeBtn').innerHTML =
-        document.body.classList.contains('light-mode')
-        ? "🌙 Dark Mode"
-        : "☀️ Light Mode";
+/* SITE JS */
+function toggleMode(){
+    document.body.classList.toggle("light-mode");
+    modeBtn.innerHTML=document.body.classList.contains("light-mode")
+        ?"🌙 Dark Mode":"☀️ Light Mode";
+}
+
+function showSection(id){
+    document.querySelectorAll(".info-section")
+        .forEach(s=>s.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+const menuBtn=document.getElementById("menuBtn");
+const sidebar=document.getElementById("sidebar");
+
+menuBtn.onclick=()=>toggleMenu();
+function toggleMenu(){
+    menuBtn.classList.toggle("open");
+    sidebar.style.left=sidebar.style.left==="0px"?"-250px":"0px";
 }
 </script>
 
