@@ -33,6 +33,57 @@ header {
     position: relative;
 }
 
+/* 🔔 NOTIFICATIONS */
+.notifications {
+    max-width: 1100px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+.notice {
+    padding: 15px 18px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    animation: slideFade 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(-10px);
+    font-size: 0.95rem;
+}
+
+/* TYPES */
+.notice-info {
+    background: #1f2933;
+    border-left: 5px solid #38bdf8;
+}
+
+.notice-warning {
+    background: #2a1f1f;
+    border-left: 5px solid #facc15;
+}
+
+.notice-success {
+    background: #1f2a22;
+    border-left: 5px solid #22c55e;
+}
+
+.notice-error {
+    background: #2a1f1f;
+    border-left: 5px solid #ef4444;
+}
+
+/* LIGHT MODE */
+body.light-mode .notice {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+@keyframes slideFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .toggle-btn {
     position: absolute;
     top: 20px;
@@ -105,11 +156,7 @@ body.light-mode .sidebar {
     font-size: 1em;
     cursor: pointer;
     text-align: left;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-body.light-mode .sidebar button {
-    background-color: #dc2626;
+    transition: transform 0.2s;
 }
 
 .sidebar button:hover {
@@ -118,7 +165,9 @@ body.light-mode .sidebar button {
 
 /* MAIN CONTENT */
 .main {
-    padding: 100px 30px 30px 30px;
+    padding: 40px 30px 30px;
+    max-width: 1100px;
+    margin: auto;
 }
 
 .info-section {
@@ -132,21 +181,11 @@ body.light-mode .sidebar button {
 
 body.light-mode .info-section {
     background-color: #ffffff;
-    color: #1a1a1a;
 }
 
 .info-section h2 {
     margin-bottom: 15px;
     color: #dc2626;
-}
-
-.price-list {
-    list-style: none;
-}
-
-.price-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid #777;
 }
 
 footer {
@@ -160,85 +199,51 @@ footer {
 
 <header>
     <div class="menu-btn" id="menuBtn">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
     <button class="toggle-btn" id="modeBtn" onclick="toggleMode()">☀️ Light Mode</button>
     <h1>Cronixo Server</h1>
     <p>Danmarks fedeste roleplay oplevelse</p>
 </header>
 
+<!-- 🔔 EASY CUSTOM NOTIFICATIONS -->
+<div class="notifications">
+    <div class="notice notice-info">
+        <strong>ℹ️ INFO:</strong> Serveren åbner kl. 18:00 i dag!
+    </div>
+
+    <div class="notice notice-warning">
+        <strong>⚠️ VIGTIGT:</strong> Nye regler er blevet opdateret.
+    </div>
+
+    <div class="notice notice-success">
+        <strong>✅ NYT:</strong> Jobs er nu tilgængelige.
+    </div>
+</div>
+
 <div class="sidebar" id="sidebar">
     <button onclick="showSection('home'); toggleMenu()">Om Serveren</button>
-    <button onclick="showSection('join'); toggleMenu()">Tilslut Server</button>
+    <button onclick="showSection('join'); toggleMenu()">Tilslut</button>
     <button onclick="showSection('discord'); toggleMenu()">Discord</button>
-    <button onclick="showSection('rules'); toggleMenu()">Server Regler</button>
+    <button onclick="showSection('rules'); toggleMenu()">Regler</button>
     <button onclick="showSection('store'); toggleMenu()">Butik</button>
     <button onclick="showSection('jobs'); toggleMenu()">Jobs</button>
     <button onclick="showSection('faq'); toggleMenu()">FAQ</button>
 </div>
 
 <div class="main">
-
     <div id="home" class="info-section" style="display:block;">
         <h2>Om Cronixo Server</h2>
-        <p>Cronixo Server er Danmarks fedeste roleplay server med fokus på seriøs RP.</p>
-    </div>
-
-    <div id="join" class="info-section">
-        <h2>Tilslut Serveren</h2>
-        <p>FiveM → F8 →</p>
-        <strong>connect 67.67.67.67:30120</strong>
-    </div>
-
-    <div id="discord" class="info-section">
-        <h2>Discord</h2>
-        <p><strong>discord.gg/cronixo</strong></p>
-    </div>
-
-    <div id="rules" class="info-section">
-        <h2>Server Regler</h2>
-        <ul>
-            <li>Ingen RDM / VDM</li>
-            <li>Bliv i karakter</li>
-            <li>Respektér staff</li>
-        </ul>
-    </div>
-
-    <div id="store" class="info-section">
-        <h2>Butik</h2>
-        <ul class="price-list">
-            <li>Supporter – 20 kr</li>
-            <li>Admin – 49 kr</li>
-            <li>Ledelse – 99 kr</li>
-        </ul>
-    </div>
-
-    <div id="jobs" class="info-section">
-        <h2>Jobs</h2>
-        <ul>
-            <li>Politi</li>
-            <li>EMS</li>
-            <li>Mekaniker</li>
-            <li>Taxi</li>
-        </ul>
+        <p>Velkommen til Cronixo.</p>
     </div>
 
     <div id="faq" class="info-section">
         <h2>FAQ</h2>
-        <p><strong>Er serveren whitelist?</strong></p>
-        <p>Ja – ansøg via Discord.</p>
-        <p></p>
-        <p><strong>Kan man købe dette domain og hjemmeside?</strong></p>
-        <p>Jep, kontakt @ejer på discord ved køb eller spørgsmål.</p>
+        <p>Kontakt os via Discord.</p>
     </div>
-
 </div>
 
-<footer>
-    &copy; 2026 Cronixo Server
-</footer>
+<footer>&copy; 2026 Cronixo Server</footer>
 
 <script>
 function toggleMode() {
@@ -250,8 +255,7 @@ function toggleMode() {
 }
 
 function showSection(id) {
-    document.querySelectorAll('.info-section')
-        .forEach(section => section.style.display = 'none');
+    document.querySelectorAll('.info-section').forEach(s => s.style.display = 'none');
     document.getElementById(id).style.display = 'block';
 }
 
@@ -268,4 +272,3 @@ function toggleMenu() {
 
 </body>
 </html>
-
