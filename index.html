@@ -110,7 +110,6 @@ body.light-mode .sidebar {
 
 body.light-mode .sidebar button {
     background-color: #dc2626;
-    color: white;
 }
 
 .sidebar button:hover {
@@ -134,7 +133,6 @@ body.light-mode .sidebar button {
 body.light-mode .info-section {
     background-color: #ffffff;
     color: #1a1a1a;
-    border-left-color: #dc2626;
 }
 
 .info-section h2 {
@@ -149,10 +147,6 @@ body.light-mode .info-section {
 .price-list li {
     padding: 10px 0;
     border-bottom: 1px solid #777;
-}
-
-body.light-mode .price-list li {
-    border-bottom: 1px solid #ccc;
 }
 
 footer {
@@ -181,48 +175,64 @@ footer {
     <button onclick="showSection('discord'); toggleMenu()">Discord</button>
     <button onclick="showSection('rules'); toggleMenu()">Server Regler</button>
     <button onclick="showSection('store'); toggleMenu()">Butik</button>
+    <button onclick="showSection('jobs'); toggleMenu()">Jobs</button>
+    <button onclick="showSection('faq'); toggleMenu()">FAQ</button>
 </div>
 
 <div class="main">
-    <div id="home" class="info-section" style="display: block;">
+
+    <div id="home" class="info-section" style="display:block;">
         <h2>Om Cronixo Server</h2>
-        <p>Cronixo Server er Danmarks fedeste roleplay server med fokus på kvalitet, fællesskab og seriøs RP.</p>
-        <p>Vores staff er aktiv og hjælper altid spillerne.</p>
+        <p>Cronixo Server er Danmarks fedeste roleplay server med fokus på seriøs RP.</p>
     </div>
 
     <div id="join" class="info-section">
         <h2>Tilslut Serveren</h2>
-        <p>Åbn FiveM, tryk <strong>F8</strong> og skriv:</p>
-        <strong>connect 67.67.67:30120</strong>
+        <p>FiveM → F8 →</p>
+        <strong>connect 67.67.67.67:30120</strong>
     </div>
 
     <div id="discord" class="info-section">
         <h2>Discord</h2>
-        <p>Join vores Discord:</p>
-        <p><strong>discord.gg/@2026</strong></p>
+        <p><strong>discord.gg/cronixo</strong></p>
     </div>
 
     <div id="rules" class="info-section">
         <h2>Server Regler</h2>
         <ul>
             <li>Ingen RDM / VDM</li>
-            <li>Bliv i karakter (RP)</li>
-            <li>Respektér spillere og staff</li>
-            <li>Ingen exploits</li>
+            <li>Bliv i karakter</li>
+            <li>Respektér staff</li>
         </ul>
     </div>
 
     <div id="store" class="info-section">
-        <h2>Butik – Priser</h2>
+        <h2>Butik</h2>
         <ul class="price-list">
-            <li>P-Supporter – <strong>12 kr.</strong></li>
-            <li>Supporter – <strong>20 kr.</strong></li>
-            <li>Admin – <strong>49 kr.</strong></li>
-            <li>Head Admin – <strong>65 kr.</strong></li>
-            <li>Ledelse – <strong>99 kr.</strong></li>
-            <li>Senior Ledelse – <strong>149 kr.</strong></li>
+            <li>Supporter – 20 kr</li>
+            <li>Admin – 49 kr</li>
+            <li>Ledelse – 99 kr</li>
         </ul>
     </div>
+
+    <div id="jobs" class="info-section">
+        <h2>Jobs</h2>
+        <ul>
+            <li>Politi</li>
+            <li>EMS</li>
+            <li>Mekaniker</li>
+            <li>Taxi</li>
+        </ul>
+    </div>
+
+    <div id="faq" class="info-section">
+        <h2>FAQ</h2>
+        <p><strong>Er serveren whitelist?</strong></p>
+        <p>Ja – ansøg via Discord.</p>
+        <p><strong>Kan man købe dette domain og hjemmeside?</strong></p>
+        <p>Jep, kontakt @ejer på discord ved køb eller spørgsmål.</p>
+    </div>
+
 </div>
 
 <footer>
@@ -232,13 +242,10 @@ footer {
 <script>
 function toggleMode() {
     document.body.classList.toggle('light-mode');
-
-    const btn = document.getElementById('modeBtn');
-    if (document.body.classList.contains('light-mode')) {
-        btn.innerHTML = "🌙 Dark Mode";
-    } else {
-        btn.innerHTML = "☀️ Light Mode";
-    }
+    document.getElementById('modeBtn').innerHTML =
+        document.body.classList.contains('light-mode')
+        ? "🌙 Dark Mode"
+        : "☀️ Light Mode";
 }
 
 function showSection(id) {
@@ -247,7 +254,6 @@ function showSection(id) {
     document.getElementById(id).style.display = 'block';
 }
 
-// Hamburger menu
 const menuBtn = document.getElementById('menuBtn');
 const sidebar = document.getElementById('sidebar');
 
@@ -255,11 +261,7 @@ menuBtn.addEventListener('click', toggleMenu);
 
 function toggleMenu() {
     menuBtn.classList.toggle('open');
-    if (sidebar.style.left === '0px') {
-        sidebar.style.left = '-250px';
-    } else {
-        sidebar.style.left = '0px';
-    }
+    sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
 }
 </script>
 
