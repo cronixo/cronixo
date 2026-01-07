@@ -17,7 +17,6 @@ body {
     background-color: #1a1a1a;
     color: #ebebeb;
     transition: background-color 0.3s, color 0.3s;
-    overflow-x: hidden;
 }
 
 body.light-mode {
@@ -33,57 +32,61 @@ header {
     position: relative;
 }
 
-/* 🔔 NOTIFICATIONS */
-.notifications {
-    max-width: 1100px;
-    margin: 20px auto 0;
-    padding: 0 20px;
+/* 🔔 SINGLE NOTIFICATION */
+.notification-wrapper {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    pointer-events: none;
 }
 
 .notice {
+    min-width: 320px;
+    max-width: 90vw;
     padding: 15px 18px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    animation: slideFade 0.6s ease forwards;
-    opacity: 0;
-    transform: translateY(-10px);
+    border-radius: 12px;
     font-size: 0.95rem;
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: all 0.5s ease;
 }
 
-/* TYPES */
-.notice-info {
+/* Visible */
+.notice.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Types */
+.notice.info {
     background: #1f2933;
     border-left: 5px solid #38bdf8;
 }
 
-.notice-warning {
+.notice.warning {
     background: #2a1f1f;
     border-left: 5px solid #facc15;
 }
 
-.notice-success {
+.notice.success {
     background: #1f2a22;
     border-left: 5px solid #22c55e;
 }
 
-.notice-error {
+.notice.error {
     background: #2a1f1f;
     border-left: 5px solid #ef4444;
 }
 
-/* LIGHT MODE */
+/* Light mode */
 body.light-mode .notice {
     background: #ffffff;
     color: #1a1a1a;
 }
 
-@keyframes slideFade {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Existing buttons */
 .toggle-btn {
     position: absolute;
     top: 20px;
@@ -126,73 +129,6 @@ body.light-mode .notice {
 .menu-btn.open span:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
 }
-
-/* SIDEBAR */
-.sidebar {
-    position: fixed;
-    left: -250px;
-    top: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #2a2a2a;
-    padding: 60px 20px 20px;
-    transition: 0.4s;
-    z-index: 1000;
-}
-
-body.light-mode .sidebar {
-    background-color: #f2f2f2;
-}
-
-.sidebar button {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 15px;
-    background-color: #991b1b;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
-    cursor: pointer;
-    text-align: left;
-    transition: transform 0.2s;
-}
-
-.sidebar button:hover {
-    transform: scale(1.03);
-}
-
-/* MAIN CONTENT */
-.main {
-    padding: 40px 30px 30px;
-    max-width: 1100px;
-    margin: auto;
-}
-
-.info-section {
-    display: none;
-    padding: 20px;
-    border-left: 5px solid #dc2626;
-    border-radius: 8px;
-    background-color: #2a2a2a;
-    margin-bottom: 20px;
-}
-
-body.light-mode .info-section {
-    background-color: #ffffff;
-}
-
-.info-section h2 {
-    margin-bottom: 15px;
-    color: #dc2626;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    opacity: 0.7;
-}
 </style>
 </head>
 <body>
@@ -206,67 +142,54 @@ footer {
     <p>Danmarks fedeste roleplay oplevelse</p>
 </header>
 
-<!-- 🔔 EASY CUSTOM NOTIFICATIONS -->
-<div class="notifications">
-    <div class="notice notice-info">
-        <strong>ℹ️ INFO:</strong> Serveren åbner kl. 18:00 i dag!
-    </div>
-
-    <div class="notice notice-warning">
-        <strong>⚠️ VIGTIGT:</strong> Nye regler er blevet opdateret.
-    </div>
-
-    <div class="notice notice-success">
-        <strong>✅ NYT:</strong> Jobs er nu tilgængelige.
-    </div>
+<!-- 🔔 Notification container -->
+<div class="notification-wrapper">
+    <div id="notification" class="notice"></div>
 </div>
-
-<div class="sidebar" id="sidebar">
-    <button onclick="showSection('home'); toggleMenu()">Om Serveren</button>
-    <button onclick="showSection('join'); toggleMenu()">Tilslut</button>
-    <button onclick="showSection('discord'); toggleMenu()">Discord</button>
-    <button onclick="showSection('rules'); toggleMenu()">Regler</button>
-    <button onclick="showSection('store'); toggleMenu()">Butik</button>
-    <button onclick="showSection('jobs'); toggleMenu()">Jobs</button>
-    <button onclick="showSection('faq'); toggleMenu()">FAQ</button>
-</div>
-
-<div class="main">
-    <div id="home" class="info-section" style="display:block;">
-        <h2>Om Cronixo Server</h2>
-        <p>Velkommen til Cronixo.</p>
-    </div>
-
-    <div id="faq" class="info-section">
-        <h2>FAQ</h2>
-        <p>Kontakt os via Discord.</p>
-    </div>
-</div>
-
-<footer>&copy; 2026 Cronixo Server</footer>
 
 <script>
+/* ✏️ CUSTOMIZE NOTIFICATIONS HERE */
+const notifications = [
+    { type: "info", text: "ℹ️ Serveren åbner kl. 18:00 i dag!" },
+    { type: "warning", text: "⚠️ Nye regler er blevet opdateret." },
+    { type: "success", text: "✅ Jobs er nu tilgængelige på serveren." },
+    { type: "error", text: "❌ Midlertidig genstart kl. 22:00." }
+];
+
+/* ⏱ Timing (milliseconds) */
+const minDelay = 20000; // 20 seconds
+const maxDelay = 60000; // 60 seconds
+const displayTime = 6000; // visible for 6 seconds
+
+const noticeEl = document.getElementById("notification");
+
+function showRandomNotification() {
+    const n = notifications[Math.floor(Math.random() * notifications.length)];
+
+    noticeEl.className = `notice ${n.type}`;
+    noticeEl.textContent = n.text;
+
+    // Show
+    setTimeout(() => noticeEl.classList.add("show"), 50);
+
+    // Hide
+    setTimeout(() => noticeEl.classList.remove("show"), displayTime);
+
+    // Schedule next
+    const nextDelay = Math.random() * (maxDelay - minDelay) + minDelay;
+    setTimeout(showRandomNotification, nextDelay);
+}
+
+// Start system
+setTimeout(showRandomNotification, 10000);
+
+/* Theme toggle */
 function toggleMode() {
     document.body.classList.toggle('light-mode');
     document.getElementById('modeBtn').innerHTML =
         document.body.classList.contains('light-mode')
         ? "🌙 Dark Mode"
         : "☀️ Light Mode";
-}
-
-function showSection(id) {
-    document.querySelectorAll('.info-section').forEach(s => s.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-}
-
-const menuBtn = document.getElementById('menuBtn');
-const sidebar = document.getElementById('sidebar');
-
-menuBtn.addEventListener('click', toggleMenu);
-
-function toggleMenu() {
-    menuBtn.classList.toggle('open');
-    sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
 }
 </script>
 
