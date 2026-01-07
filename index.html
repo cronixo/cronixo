@@ -157,6 +157,12 @@ body.light-mode .info-section{
 }
 
 footer{text-align:center;padding:20px;opacity:.7}
+
+/* ADMIN MODE */
+.admin-editable[contenteditable="true"]{
+    outline:2px dashed #22c55e;
+    cursor:text
+}
 </style>
 </head>
 <body>
@@ -170,81 +176,135 @@ footer{text-align:center;padding:20px;opacity:.7}
     <p>Danmarks fedeste roleplay oplevelse</p>
 </header>
 
-<!-- 🔔 SINGLE NOTIFICATION -->
 <div class="notification-wrapper">
     <div id="notification" class="notice"></div>
 </div>
 
 <div class="sidebar" id="sidebar">
-    <button onclick="showSection('home');toggleMenu()">Om Serveren</button>
-    <button onclick="showSection('join');toggleMenu()">Tilslut</button>
-    <button onclick="showSection('discord');toggleMenu()">Discord</button>
-    <button onclick="showSection('rules');toggleMenu()">Regler</button>
-    <button onclick="showSection('store');toggleMenu()">Butik</button>
-    <button onclick="showSection('jobs');toggleMenu()">Jobs</button>
-    <button onclick="showSection('faq');toggleMenu()">FAQ</button>
+    <button onclick="navigate('home')">Om Serveren</button>
+    <button onclick="navigate('join')">Tilslut</button>
+    <button onclick="navigate('discord')">Discord</button>
+    <button onclick="navigate('rules')">Regler</button>
+    <button onclick="navigate('store')">Butik</button>
+    <button onclick="navigate('jobs')">Jobs</button>
+    <button onclick="navigate('faq')">FAQ</button>
 </div>
 
 <div class="main">
-    <div id="home" class="info-section" style="display:block">
-        <h2>Om Cronixo</h2><p>Velkommen til Cronixo Server.</p>
+    <div id="home" class="info-section admin-editable" style="display:block">
+        <h2>Vil du have denne hjemmeside til DIN server?</h2>
+        <p>Så kontakt os på discorden!</p>
     </div>
-    <div id="join" class="info-section"><h2>Tilslut</h2></div>
-    <div id="discord" class="info-section"><h2>Discord</h2></div>
-    <div id="rules" class="info-section"><h2>Regler</h2></div>
-    <div id="store" class="info-section"><h2>Butik</h2></div>
-    <div id="jobs" class="info-section"><h2>Jobs</h2></div>
-    <div id="faq" class="info-section"><h2>FAQ</h2></div>
+
+    <div id="join" class="info-section admin-editable">
+        <h2>Tilslut</h2>
+        <p>connect 67.67.67.67:30120</p>
+    </div>
+
+    <div id="discord" class="info-section admin-editable">
+        <h2>Discord</h2>
+        <p>discord.gg/cronixo</p>
+    </div>
+
+    <div id="rules" class="info-section admin-editable">
+        <h2>Regler</h2>
+        <p>Ingen RDM / VDM</p>
+    </div>
+
+    <div id="store" class="info-section admin-editable">
+        <h2>Butik</h2>
+        <p>Supporter – 20 kr</p>
+    </div>
+
+    <div id="jobs" class="info-section admin-editable">
+        <h2>Jobs</h2>
+        <p>Politi, EMS, Mekaniker</p>
+    </div>
+
+    <div id="faq" class="info-section admin-editable">
+        <h2>FAQ</h2>
+        <p>Ja, serveren er whitelist.</p>
+    </div>
 </div>
 
 <footer>&copy; 2026 Cronixo Server</footer>
 
 <script>
+/* 🔐 ADMIN */
+const ADMIN_PASSWORD = "cronixo123";
+let adminMode = false;
+
 /* 🔔 NOTIFICATIONS */
 const notifications=[
-    {type:"info",text:"ℹ️ Serveren åbner kl. 18:00 i dag!"},
-    {type:"warning",text:"⚠️ Nye regler er blevet opdateret."},
-    {type:"success",text:"✅ Jobs er nu tilgængelige."},
-    {type:"error",text:"❌ Midlertidig genstart kl. 22:00."}
+    {type:"info",text:"ℹ️ Vil du købe denne hjemmeside? Kontakt os på Discord!"},
+    {type:"warning",text:"⚠️ Har du forslag? skriv i #forslag"},
+    {type:"success",text:"✅ Vi søger staff – ansøg nu!"}
 ];
 
-const minDelay=25000;
-const maxDelay=70000;
-const displayTime=6000;
-
+const minDelay=25000, maxDelay=70000, displayTime=10000;
 const notice=document.getElementById("notification");
 
 function showNotification(){
     const n=notifications[Math.floor(Math.random()*notifications.length)];
     notice.className=`notice ${n.type}`;
     notice.textContent=n.text;
-
     setTimeout(()=>notice.classList.add("show"),50);
     setTimeout(()=>notice.classList.remove("show"),displayTime);
-
-    setTimeout(showNotification,
-        Math.random()*(maxDelay-minDelay)+minDelay
-    );
+    setTimeout(showNotification,Math.random()*(maxDelay-minDelay)+minDelay);
 }
-
 setTimeout(showNotification,10000);
 
-/* SITE JS */
+/* 🧭 NAVIGATION + URL */
+function navigate(id){
+    showSection(id);
+    history.pushState(null,"",`/${id}`);
+    toggleMenu();
+}
+
+function showSection(id){
+    document.querySelectorAll(".info-section").forEach(s=>s.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+/* Restore on refresh */
+window.addEventListener("load",()=>{
+    const page=location.pathname.replace("/","");
+    if(page && document.getElementById(page)) showSection(page);
+});
+
+/* ADMIN MODE */
+document.addEventListener("keydown",e=>{
+    if(e.ctrlKey && e.shiftKey && e.key==="A"){
+        const pass=prompt("Admin password:");
+        if(pass===ADMIN_PASSWORD){
+            adminMode=!adminMode;
+            document.querySelectorAll(".admin-editable").forEach(el=>{
+                el.contentEditable=adminMode;
+                if(adminMode) loadContent(el);
+                el.addEventListener("input",()=>saveContent(el));
+            });
+            alert(adminMode?"Admin mode ON":"Admin mode OFF");
+        }
+    }
+});
+
+function saveContent(el){
+    localStorage.setItem("content-"+el.id,el.innerHTML);
+}
+function loadContent(el){
+    const saved=localStorage.getItem("content-"+el.id);
+    if(saved) el.innerHTML=saved;
+}
+
+/* UI */
 function toggleMode(){
     document.body.classList.toggle("light-mode");
     modeBtn.innerHTML=document.body.classList.contains("light-mode")
         ?"🌙 Dark Mode":"☀️ Light Mode";
 }
 
-function showSection(id){
-    document.querySelectorAll(".info-section")
-        .forEach(s=>s.style.display="none");
-    document.getElementById(id).style.display="block";
-}
-
 const menuBtn=document.getElementById("menuBtn");
 const sidebar=document.getElementById("sidebar");
-
 menuBtn.onclick=()=>toggleMenu();
 function toggleMenu(){
     menuBtn.classList.toggle("open");
