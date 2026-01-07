@@ -50,20 +50,10 @@ header{
     font-size:.95rem
 }
 
-.notice.show{
-    opacity:1;
-    transform:translateY(0)
-}
-
+.notice.show{opacity:1;transform:translateY(0)}
 .notice.info{background:#1f2933;border-left:5px solid #38bdf8}
 .notice.warning{background:#2a1f1f;border-left:5px solid #facc15}
 .notice.success{background:#1f2a22;border-left:5px solid #22c55e}
-.notice.error{background:#2a1f1f;border-left:5px solid #ef4444}
-
-body.light-mode .notice{
-    background:#fff;
-    color:#1a1a1a
-}
 
 .toggle-btn{
     position:absolute;
@@ -77,6 +67,7 @@ body.light-mode .notice{
     cursor:pointer
 }
 
+/* MENU */
 .menu-btn{
     position:absolute;
     top:20px;
@@ -86,7 +77,6 @@ body.light-mode .notice{
     cursor:pointer;
     z-index:1001
 }
-
 .menu-btn span{
     display:block;
     height:3px;
@@ -94,14 +84,9 @@ body.light-mode .notice{
     margin:5px 0;
     transition:.4s
 }
-
-.menu-btn.open span:nth-child(1){
-    transform:rotate(45deg) translate(5px,5px)
-}
+.menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
 .menu-btn.open span:nth-child(2){opacity:0}
-.menu-btn.open span:nth-child(3){
-    transform:rotate(-45deg) translate(5px,-5px)
-}
+.menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
 /* SIDEBAR */
 .sidebar{
@@ -111,57 +96,54 @@ body.light-mode .notice{
     width:250px;
     height:100%;
     background:#2a2a2a;
-    padding:60px 20px 20px;
+    padding:70px 20px 20px;
     transition:.4s;
     z-index:1000
 }
 
-body.light-mode .sidebar{background:#f2f2f2}
-
 .sidebar button{
     width:100%;
-    margin-bottom:15px;
-    padding:15px;
+    margin-bottom:16px;
+    padding:16px;
     background:#991b1b;
     color:#fff;
     border:none;
-    border-radius:8px;
+    border-radius:10px;
     cursor:pointer;
-    text-align:left
+    text-align:left;
+    transition:.2s
 }
 
-.sidebar button:hover{transform:scale(1.03)}
+.sidebar button.active,
+.sidebar button:hover{
+    background:#dc2626
+}
 
 /* MAIN */
-.main{
-    padding:100px 30px 30px
-}
+.main{padding:100px 30px 30px}
 
 .info-section{
     display:none;
     padding:20px;
     background:#2a2a2a;
     border-left:5px solid #dc2626;
-    border-radius:8px;
-    margin-bottom:20px
+    border-radius:10px;
+    margin-bottom:20px;
+    animation:fade .3s ease
 }
 
-body.light-mode .info-section{
-    background:#fff;
-    color:#1a1a1a
+@keyframes fade{
+    from{opacity:0;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
 }
 
-.info-section h2{
-    margin-bottom:15px;
-    color:#dc2626
-}
+.info-section h2{margin-bottom:15px;color:#dc2626}
 
 footer{text-align:center;padding:20px;opacity:.7}
 
-/* ADMIN MODE */
+/* ADMIN */
 .admin-editable[contenteditable="true"]{
-    outline:2px dashed #22c55e;
-    cursor:text
+    outline:2px dashed #22c55e
 }
 </style>
 </head>
@@ -181,13 +163,13 @@ footer{text-align:center;padding:20px;opacity:.7}
 </div>
 
 <div class="sidebar" id="sidebar">
-    <button onclick="navigate('home')">Om Serveren</button>
-    <button onclick="navigate('join')">Tilslut</button>
-    <button onclick="navigate('discord')">Discord</button>
-    <button onclick="navigate('rules')">Regler</button>
-    <button onclick="navigate('store')">Butik</button>
-    <button onclick="navigate('jobs')">Jobs</button>
-    <button onclick="navigate('faq')">FAQ</button>
+    <button onclick="show('home',this)" class="active">Om Serveren</button>
+    <button onclick="show('join',this)">Tilslut</button>
+    <button onclick="show('discord',this)">Discord</button>
+    <button onclick="show('rules',this)">Regler</button>
+    <button onclick="show('store',this)">Butik</button>
+    <button onclick="show('jobs',this)">Jobs</button>
+    <button onclick="show('faq',this)">FAQ</button>
 </div>
 
 <div class="main">
@@ -198,7 +180,7 @@ footer{text-align:center;padding:20px;opacity:.7}
 
     <div id="join" class="info-section admin-editable">
         <h2>Tilslut</h2>
-        <p>connect 67.67.67.67:30120</p>
+        <p>Connect via FiveM eller Discord.</p>
     </div>
 
     <div id="discord" class="info-section admin-editable">
@@ -208,108 +190,92 @@ footer{text-align:center;padding:20px;opacity:.7}
 
     <div id="rules" class="info-section admin-editable">
         <h2>Regler</h2>
-        <p>Ingen RDM / VDM</p>
+        <p>Ingen RDM, VDM eller powergaming.</p>
     </div>
 
     <div id="store" class="info-section admin-editable">
         <h2>Butik</h2>
-        <p>Supporter – 20 kr</p>
+        <p><strong>Supporter – 20 kr</strong></p>
+        <p>Fjern kø, supporter rolle og ekstra fordele.</p>
     </div>
 
     <div id="jobs" class="info-section admin-editable">
         <h2>Jobs</h2>
-        <p>Politi, EMS, Mekaniker</p>
+        <p>Politi, EMS, Mekaniker, Journalist</p>
     </div>
 
     <div id="faq" class="info-section admin-editable">
         <h2>FAQ</h2>
-        <p>Ja, serveren er whitelist.</p>
+        <p>Serveren er whitelist og kræver ansøgning.</p>
     </div>
 </div>
 
 <footer>&copy; 2026 Cronixo Server</footer>
 
 <script>
-/* 🔐 ADMIN */
-const ADMIN_PASSWORD = "cronixo123";
-let adminMode = false;
+/* ADMIN */
+const ADMIN_PASSWORD="cronixo123";
+let admin=false;
 
-/* 🔔 NOTIFICATIONS */
-const notifications=[
-    {type:"info",text:"ℹ️ Vil du købe denne hjemmeside? Kontakt os på Discord!"},
-    {type:"warning",text:"⚠️ Har du forslag? skriv i #forslag"},
-    {type:"success",text:"✅ Vi søger staff – ansøg nu!"}
+/* NOTIFICATIONS */
+const notices=[
+ {type:"info",text:"ℹ️ Kontakt os på Discord for samarbejde"},
+ {type:"success",text:"✅ Vi søger staff lige nu!"}
 ];
+const nEl=document.getElementById("notification");
 
-const minDelay=25000, maxDelay=70000, displayTime=10000;
-const notice=document.getElementById("notification");
-
-function showNotification(){
-    const n=notifications[Math.floor(Math.random()*notifications.length)];
-    notice.className=`notice ${n.type}`;
-    notice.textContent=n.text;
-    setTimeout(()=>notice.classList.add("show"),50);
-    setTimeout(()=>notice.classList.remove("show"),displayTime);
-    setTimeout(showNotification,Math.random()*(maxDelay-minDelay)+minDelay);
+function notify(){
+ const n=notices[Math.random()*notices.length|0];
+ nEl.className=`notice ${n.type}`;
+ nEl.textContent=n.text;
+ setTimeout(()=>nEl.classList.add("show"),50);
+ setTimeout(()=>nEl.classList.remove("show"),9000);
+ setTimeout(notify,30000+Math.random()*40000);
 }
-setTimeout(showNotification,10000);
+setTimeout(notify,12000);
 
-/* 🧭 NAVIGATION + URL */
-function navigate(id){
-    showSection(id);
-    history.pushState(null,"",`/${id}`);
-    toggleMenu();
+/* NAV */
+function show(id,btn){
+ document.querySelectorAll(".info-section").forEach(s=>s.style.display="none");
+ document.getElementById(id).style.display="block";
+ document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ toggleMenu();
 }
-
-function showSection(id){
-    document.querySelectorAll(".info-section").forEach(s=>s.style.display="none");
-    document.getElementById(id).style.display="block";
-}
-
-/* Restore on refresh */
-window.addEventListener("load",()=>{
-    const page=location.pathname.replace("/","");
-    if(page && document.getElementById(page)) showSection(page);
-});
 
 /* ADMIN MODE */
 document.addEventListener("keydown",e=>{
-    if(e.ctrlKey && e.shiftKey && e.key==="A"){
-        const pass=prompt("Admin password:");
-        if(pass===ADMIN_PASSWORD){
-            adminMode=!adminMode;
-            document.querySelectorAll(".admin-editable").forEach(el=>{
-                el.contentEditable=adminMode;
-                if(adminMode) loadContent(el);
-                el.addEventListener("input",()=>saveContent(el));
-            });
-            alert(adminMode?"Admin mode ON":"Admin mode OFF");
-        }
-    }
+ if(e.ctrlKey&&e.shiftKey&&e.key==="A"){
+  if(prompt("Admin password")===ADMIN_PASSWORD){
+   admin=!admin;
+   document.querySelectorAll(".admin-editable").forEach(el=>{
+    el.contentEditable=admin;
+    if(admin) el.innerHTML=localStorage.getItem(el.id)||el.innerHTML;
+    el.oninput=()=>localStorage.setItem(el.id,el.innerHTML);
+   });
+   alert(admin?"Admin mode ON":"Admin mode OFF");
+  }
+ }
+ if(e.ctrlKey&&e.shiftKey&&e.key==="R"){
+  if(confirm("Reset ALL saved admin text?")){
+   localStorage.clear();
+   location.reload();
+  }
+ }
 });
-
-function saveContent(el){
-    localStorage.setItem("content-"+el.id,el.innerHTML);
-}
-function loadContent(el){
-    const saved=localStorage.getItem("content-"+el.id);
-    if(saved) el.innerHTML=saved;
-}
 
 /* UI */
 function toggleMode(){
-    document.body.classList.toggle("light-mode");
-    modeBtn.innerHTML=document.body.classList.contains("light-mode")
-        ?"🌙 Dark Mode":"☀️ Light Mode";
+ document.body.classList.toggle("light-mode");
+ modeBtn.textContent=document.body.classList.contains("light-mode")?"🌙 Dark Mode":"☀️ Light Mode";
 }
-
 const menuBtn=document.getElementById("menuBtn");
 const sidebar=document.getElementById("sidebar");
-menuBtn.onclick=()=>toggleMenu();
 function toggleMenu(){
-    menuBtn.classList.toggle("open");
-    sidebar.style.left=sidebar.style.left==="0px"?"-250px":"0px";
+ menuBtn.classList.toggle("open");
+ sidebar.style.left=sidebar.style.left==="0px"?"-250px":"0px";
 }
+menuBtn.onclick=toggleMenu;
 </script>
 
 </body>
